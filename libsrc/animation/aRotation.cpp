@@ -219,9 +219,30 @@ bool mat3::ToEulerAngles(RotOrder order, vec3& angleRad) const
 
 		case YXZ:
 			//TODO: student implementation for computing Euler angles from a rotation matrix with an YXZ order of rotation goes here
-			angleRad = vec3(0.0, 0.0, 0.0);
-			result = false;
-
+			angleRad[VX] = asin(-mM[1][2]);
+			if (angleRad[VX] > -M_PI_2 + EPSILON)
+			{
+				if (angleRad[VX] < M_PI_2 - EPSILON)
+				{
+					angleRad[VY] = atan2(mM[0][2], mM[0][0]);
+					angleRad[VZ] = atan2(mM[1][0], mM[0][0]);
+					result = true;
+				}
+				else
+				{
+					// WARNING.  Not a unique solution.
+					angleRad[VZ] = 0.0f;
+					angleRad[VY] = atan2(mM[1][0], mM[0][0]);
+					result = false;
+				}
+			}
+			else
+			{
+				// WARNING.  Not a unique solution.
+				angleRad[VZ] = 0.0f;
+				angleRad[VY] = -atan2(mM[1][0], mM[0][0]);
+				result = false;
+			}
 			break;
 	}
 	return result;
