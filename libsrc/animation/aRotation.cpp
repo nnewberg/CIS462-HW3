@@ -12,6 +12,7 @@ enum { VX, VY, VZ, VW };
 #pragma warning(disable : 4244)
 
 // CONSTRUCTORS
+
 mat3::mat3() 
 {
     mM[0] = vec3(0.0f,0.0f,0.0f);
@@ -1200,7 +1201,17 @@ mat3 quat::ToRotation () const
 	mat3 m;
 	m.Identity();
 	//TODO: student implementation for converting quaternion to rotation matrix goes here
+	m[0][0] = (1 - 2 * pow(mQ[VY], 2) - 2 * pow(mQ[VZ], 2));
+	m[0][1] = (2 * mQ[VX] * mQ[VY] - 2 * mQ[VZ] * mQ[VW]);
+	m[0][2] = (2 * mQ[VX] * mQ[VZ] + 2 * mQ[VY] * mQ[VW]);
+	
+	m[1][0] = (2 * mQ[VX] * mQ[VY] + 2 * mQ[VZ] * mQ[VW]);
+	m[1][1] = (1 - 2 * pow(mQ[VX], 2) - 2 * pow(mQ[VZ], 2));
+	m[1][2] = (2 * mQ[VY] * mQ[VZ] - 2 * mQ[VX] * mQ[VW]);
 
+	m[2][0] = (2 * mQ[VX] * mQ[VZ] - 2 * mQ[VY] * mQ[VW]);
+	m[2][1] = (2 * mQ[VY] * mQ[VZ] + 2 * mQ[VX] * mQ[VW]);
+	m[2][2] = (1 - 2 * pow(mQ[VX], 2) - 2 * pow(mQ[VY], 2));
 
     return m;
 }
